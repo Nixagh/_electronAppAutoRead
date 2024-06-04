@@ -1,0 +1,17 @@
+{
+  "name": "app-read-manga-auto",
+  "version": "1.0.0",
+  "description": "this is a tool for auto reading manga",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-packager . autoReadMangaTool --ignore=/.idea,/node_modules --platform=win32 --arch=x64 --electron-version=30.0.9 --overwrite --out=../release --icon=icon.ico"
+  },
+  "author": "nixagh",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron/packager": "^18.0.0",
+    "electron": "^30.0.9"
+  }
+}
