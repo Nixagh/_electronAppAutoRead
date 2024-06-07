@@ -1,3 +1,8 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
+// set local storage
+localStorage.setItem('autoScroll', 'true');
+
 document.addEventListener('DOMContentLoaded', () => {
     try {
         const images = document.querySelectorAll('img');
@@ -67,7 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (wait) await new Promise((resolve) => setTimeout(resolve, 7.1 * 1000));
 
             const nextButton = document.querySelector('.next');
+
+            if (nextButton.classList.contains('disabled')) {
+                ipcRenderer.send('read-done', 'read done');
+            }
+
             if (nextButton) {
+                ipcRenderer.send('next', location.href);
                 nextButton.click();
             } else {
                 console.log('next button not found');
