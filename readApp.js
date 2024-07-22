@@ -1,4 +1,7 @@
-const {app, BrowserWindow} = require('electron');
+const {
+    app,
+    BrowserWindow
+} = require('electron');
 const path = require('node:path');
 
 const settings = require('./settings.json');
@@ -40,14 +43,17 @@ function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resiz
 
         win.loadURL(url).then();
     } catch (e) {
-        console.log(e);
+        console.log("error:", e);
     }
 }
 
 const addCookie = (win) => {
     win.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
         details.requestHeaders['Cookie'] = settings.cookie;
-        callback({cancel: false, requestHeaders: details.requestHeaders});
+        callback({
+            cancel: false,
+            requestHeaders: details.requestHeaders
+        });
     });
 }
 
@@ -64,7 +70,7 @@ const collectEvent = (win) => {
                 loadNewUrlIfReadDone(win);
                 break;
             case 'next':
-                console.log(args[0]);
+                //console.log(args[0]);
                 break;
             default:
                 break;
@@ -74,22 +80,30 @@ const collectEvent = (win) => {
 
 app.whenReady().then(() => {
     const hide = process.env.HIDE === 'true';
+    const numberOfInstance = settings.numberOfInstance;
 
     // get height and width of screen
-    const {width, height} = require('electron').screen.getPrimaryDisplay().workAreaSize;
+    const {
+        width,
+        height
+    } = require('electron').screen.getPrimaryDisplay().workAreaSize;
 
     // get other window
-    let i = 0;
+    let maxCol = 0;
+    let maxRow = 1;
 
-    const randomIndex = Math.floor(Math.random() * settings.urls.length);
-
-    createWindow(i++, height - settings.height, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide);
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow(i++, height - settings.height, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide);
+    for (let i = 0; i < numberOfInstance; i++) {
+      	if ((i - maxCol) * settings.width + settings.width >= width) {
+            maxCol += i;
+            maxRow += 1;
         }
-    })
+      
+        const randomIndex = Math.floor(Math.random() * settings.urls.length);
+        const currentWidth = (i - maxCol) * settings.width;
+        const currentHeight = height - settings.height * maxRow
+
+        createWindow(currentWidth, currentHeight, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide);
+    }
 })
 
 app.on('window-all-closed', () => {
@@ -97,4 +111,3 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
-
