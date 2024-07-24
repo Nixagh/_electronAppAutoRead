@@ -7,19 +7,29 @@ const {
 localStorage.setItem('autoScroll', 'true');
 alert = () => {};
 
-// clear ajaxHelper
-const clearAjaxHelper = () => {
-    AjaxHelper.setLoadWaiting = () => {};
-    AjaxHelper.processAjaxError = (e) => {
-        setTimeout((function() {
-            location.reload()
-        }), 100)
-    }
-}
-
-clearAjaxHelper();
-
 document.addEventListener('DOMContentLoaded', () => {
+    const nixaghScript = document.createElement('script');
+    nixaghScript.type = "text/javascript";
+
+    const scriptContent = `
+      alert = () => {};
+      
+      const clearAjaxHelper = () => {
+          AjaxHelper.setLoadWaiting = () => {};
+          AjaxHelper.processAjaxError = (e) => {
+              setTimeout((function() {
+                  location.reload()
+              }), 100)
+          }
+      }
+
+      clearAjaxHelper();
+    `;
+
+    nixaghScript.appendChild(document.createTextNode(scriptContent));
+
+    document.body.appendChild(nixaghScript);
+
     try {
         const images = document.querySelectorAll('img');
         // delete all images
