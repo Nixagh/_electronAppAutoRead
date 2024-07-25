@@ -11,6 +11,8 @@ app.on('before-quit', () => {
     BrowserWindow.getAllWindows().forEach(win => win.close());
 });
 
+app.disableHardwareAcceleration();
+
 function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resizable, hide) {
     const win = new BrowserWindow({
         width: width,
@@ -20,6 +22,7 @@ function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resiz
         resizable: resizable,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            offscreen: true,
         },
         x: x,
         y: y
