@@ -73,7 +73,7 @@ const collectEvent = (win) => {
                 loadNewUrlIfReadDone(win);
                 break;
             case 'next':
-                //console.log(args[0]);
+                console.log(`${new Date().toLocaleString()} : ${args[0]}`);
                 break;
             default:
                 break;
