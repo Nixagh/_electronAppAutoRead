@@ -78,14 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const initButtonEvent = (autoScrollButton) => {
             // add event listener
-            autoScrollButton.addEventListener('click', async () => {
+            autoScrollButton.addEventListener('click', () => {
                 autoScroll = !autoScroll;
                 if (autoScroll) {
                     autoScrollButton.style.backgroundColor = 'green';
                     // add local storage
                     localStorage.setItem('autoScroll', 'true');
 
-                    await clickNextButton(false);
+                    clickNextButton(false);
                 } else {
                     autoScrollButton.style.backgroundColor = 'red';
                     localStorage.setItem('autoScroll', 'false');
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const clickNextButton = async (wait = true) => {
+        const clickNextButton = (wait = true) => {
             const nextButton = document.querySelector('.next');
 
             if (nextButton.classList.contains('disabled')) {
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initButtonEvent(button);
 
         if (localStorage.getItem('autoScroll') === 'true') {
-            clickNextButton().then();
+            clickNextButton();
         }
     } catch (e) {
         location.reload();
