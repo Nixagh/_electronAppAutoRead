@@ -9,6 +9,7 @@
   "autoHideMenuBar": true,
   "numberOfInstance": 25,
   "fullInstance": false,
+  "offscreen": true,
   "url": "https://nettruyenll.com/danh-sach-truyen/1/?sort=chapters",
   "urls": [
     "https://nettruyenll.com/manga/vo-luyen-dinh-phong/chapter-1",
