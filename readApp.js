@@ -13,7 +13,7 @@ app.on('before-quit', () => {
 
 app.disableHardwareAcceleration();
 
-function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resizable, hide) {
+function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resizable, hide, offscreen) {
     const win = new BrowserWindow({
         width: width,
         height: height,
@@ -22,7 +22,7 @@ function createWindow(x, y, width, height, url, devTools, autoHideMenuBar, resiz
         resizable: resizable,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            offscreen: true,
+            offscreen: offscreen,
         },
         x: x,
         y: y
@@ -108,7 +108,11 @@ app.whenReady().then(() => {
 
         const randomIndex = Math.floor(Math.random() * settings.urls.length);
 
-        createWindow(currentWidth, currentHeight, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide);
+        let offscreen = settings.offscreen;
+
+        if (i == numberOfInstance - 1) offscreen = false;
+
+        createWindow(currentWidth, currentHeight, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide, offscreen);
     }
 })
 
