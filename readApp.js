@@ -91,19 +91,22 @@ app.whenReady().then(() => {
         height
     } = require('electron').screen.getPrimaryDisplay().workAreaSize;
 
-    // get other window
-    let maxCol = 0;
-    let maxRow = 1;
+    const baseWidth = settings.width;
+    const baseHeight = settings.height;
+
+    var maxRow = Math.floor(height / baseHeight);
+    var maxCol = Math.floor(width / baseWidth);
+
+    if (numberOfInstance > maxRow * maxCol) numberOfInstance = maxRow * maxCol;
+
+    maxRow += 1;
 
     for (let i = 0; i < numberOfInstance; i++) {
-      	if ((i - maxCol) * settings.width + settings.width >= width) {
-            maxCol += i;
-            maxRow += 1;
-        }
-      
+        if (i % maxCol == 0) maxRow--;
+        const currentWidth = (i % maxCol) * baseWidth;
+        const currentHeight = maxRow * baseHeight;
+
         const randomIndex = Math.floor(Math.random() * settings.urls.length);
-        const currentWidth = (i - maxCol) * settings.width;
-        const currentHeight = height - settings.height * maxRow
 
         createWindow(currentWidth, currentHeight, settings.width, settings.height, settings.urls[randomIndex], settings.devTools, settings.autoHideMenuBar, settings.resizable, hide);
     }
